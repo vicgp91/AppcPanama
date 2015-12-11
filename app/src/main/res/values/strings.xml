@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">Rescate Animal</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="base_service_url">http://192.168.1.113/LogicStudio.MiClubPyme.Service.Mobile</string>
+     <string name="base_website_url">http://192.168.1.113/LogicStudio.MiClubPyme.Web/</string>
+    <!--<string name="base_service_url">http://www.logicstudiolabs.com/miclubptyapi</string>
+     <string name="base_website_url">http://www.miclubpty.com/</string>-->
+    <string name="progress_bar_title">Por favor espere</string>
+    <string name="progress_bar_message">Procesando petición...</string>
+    <string name="puntos_dolar">4</string>
+     <string name="connection_message">Ústed no esta conectado a Internet, Por favor verifique el dispositivo.</string>
+
+    <string name="action_buscar">Buscar</string>
+    <string name="action_ayuda">Ayuda</string>
+    <string name="textDefault">Texto de Muestra</string>
+
+
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_salir">Salir</string>
+    <string name="action_nueva">Otra Tarjeta</string>
+
+
+    <string name="err_msg_name">Ingrese Nombre</string>
+    <string name="err_msg_email">Ingrese Correo Electrónico</string>
+    <string name="err_msg_ubicacion">Ingrese la ubicación del suceso</string>
+
+    <string name="animal_peligro_title">Existe un animal en peligro</string>
+    <string name="peligro_message">Existe un animal en peligro en:</string>
+    <string name="email_to">alex.sanchez@logicstudio.net</string>
+    <string name="title_activity_about_app">AboutAppActivity</string>
+
+
+
+ </resources>
