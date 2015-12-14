@@ -2,6 +2,8 @@ package appcpanama.logicstudio.net.appcpanama.fragment;
 
 import android.app.Activity;
 import android.content.ContentResolver;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -16,6 +18,7 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.ShareCompat;
+import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.Html;
 import android.text.TextUtils;
@@ -28,14 +31,18 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
 import java.io.InputStream;
+import java.util.ArrayList;
 
 import appcpanama.logicstudio.net.appcpanama.Common;
 import appcpanama.logicstudio.net.appcpanama.R;
+import appcpanama.logicstudio.net.appcpanama.model.Animal;
 import fr.ganfra.materialspinner.MaterialSpinner;
 
 
@@ -44,10 +51,13 @@ public class LlamarFragment extends Fragment {
 
     private EditText inputName, inputEmail, inputUbicacion;
     private TextInputLayout inputLayoutName, inputLayoutEmail, inputLayoutUbicacion;
-    private Button btnSignUp;
+    private Button btnSignUp, btnLlamar;
     private TextView textViewMessage;
+    private RadioButton rdbPeligro,rdbAtropellado;
 
     private FloatingActionButton fabCamera,fabFolder;
+
+    private ArrayList<Animal> animales;
 
     private CoordinatorLayout coordinator;
     private ArrayAdapter<String> adapter;
@@ -57,8 +67,6 @@ public class LlamarFragment extends Fragment {
     static FragmentActivity c = null;
     static View view;
     private static Uri mUri;
-
-
     MaterialSpinner spinner;
 
     private static final String[] ANIMALS = new String[] {
@@ -88,8 +96,16 @@ public class LlamarFragment extends Fragment {
 
         view = inflater.inflate(R.layout.fragment_llamar, container, false);
         c = getActivity();
-        adapter = new ArrayAdapter<String>(c, android.R.layout.simple_spinner_item,  ANIMALS);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                //adapter = new ArrayAdapter<String>(c, android.R.layout.simple_spinner_item,  ANIMALS);
+                //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+
+        rdbPeligro.setFocusable(true);
+        animales = new ArrayList<Animal>();
+        rellenarArrayListSnniper();
+        Spinner mySpinner = (Spinner)view.findViewById(R.id.spinner);
+        mySpinner.setAdapter(new MyCustomAdapter(c, animales));
+
 
         inputLayoutName = (TextInputLayout) view.findViewById(R.id.input_layout_name);
         //inputLayoutEmail = (TextInputLayout) view.findViewById(R.id.input_layout_email);
@@ -103,20 +119,31 @@ public class LlamarFragment extends Fragment {
         inputName.addTextChangedListener(new MyTextWatcher(inputName));
         //inputEmail.addTextChangedListener(new MyTextWatcher(inputEmail));
         inputUbicacion.addTextChangedListener(new MyTextWatcher(inputUbicacion));
-        initSpinnerMultiline(view);
+
+
+        //initSpinnerMultiline(view);
 
         fabCamera =(FloatingActionButton) view.findViewById(R.id.fabCamera);
         fabFolder= (FloatingActionButton) view.findViewById(R.id.fabFolder);
 
-
+        btnLlamar=(Button)view.findViewById(R.id.llamar);
         textViewMessage= (TextView) view.findViewById(R.id.lblText);
-        textViewMessage.setText(Html.fromHtml("<p>S\u00ed encontraste alg\u00fan animal en peligro reportalo al: <h3 style='color:#00C853; forecolor:#00C853; font-size: 18px'>64977223</h3></p>"));
+
+        textViewMessage.setText("S\u00ed encontraste alg\u00fan animal en peligro reportalo al:");
+       // textViewMessage.setText(Html.fromHtml("<p>S\u00ed encontraste alg\u00fan animal en peligro reportalo al: <h3 style='color:#00C853; forecolor:#00C853; font-size: 18px'>64977223</h3></p>"));
 
 
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 submitForm();
+            }
+        });
+
+        btnLlamar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog(btnLlamar.getText().toString());
             }
         });
 
@@ -243,6 +270,9 @@ public class LlamarFragment extends Fragment {
         }
     }
 
+
+
+
     private class MyTextWatcher implements TextWatcher {
 
         private View view;
@@ -297,5 +327,77 @@ public class LlamarFragment extends Fragment {
             Snackbar.make(coordinator, ex.getLocalizedMessage(), Snackbar.LENGTH_LONG);
         }
     }
+
+    private void rellenarArrayListSnniper() {
+        animales.add(new Animal("Perezoso", "", R.drawable.peresozo));
+        animales.add(new Animal("Mono Tití", "", R.drawable.titi));
+        animales.add(new Animal("Ñeque", "", R.drawable.neque));
+        animales.add(new Animal("Coatí", "", R.drawable.coati));
+    }
+
+
+
+
+    public class MyCustomAdapter extends ArrayAdapter<Animal>{
+
+        private Context context;
+        private ArrayList<Animal> animales;
+
+        public MyCustomAdapter(Context context ,ArrayList<Animal> animales) {
+            super(context, R.layout.layoutsnniperimagen, animales);
+            this.context=context;
+            this.animales=animales;
+        }
+
+        @Override
+        public View getDropDownView(int position, View convertView,
+                                    ViewGroup parent) {
+            return getCustomView(position, convertView, parent);
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            return getCustomView(position, convertView, parent);
+        }
+
+        public View getCustomView(int position, View convertView, ViewGroup parent) {
+
+            View item = LayoutInflater.from(context).inflate(
+                    R.layout.layoutsnniperimagen, null);
+            TextView label=(TextView)item.findViewById(R.id.animal);
+            label.setText(animales.get(position).getNombre());
+            ImageView icon=(ImageView)item.findViewById(R.id.icon);
+            icon.setImageResource(animales.get(position).getImageAnimal());
+            return item;
+        }
+    }
+
+
+
+    public  void dialog(final String n)
+    {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                c);
+        alertDialogBuilder.setTitle("Confirmar llamada");
+        alertDialogBuilder.setMessage(n.toString()).setCancelable(false).
+                setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                }).setPositiveButton("Llamar", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+
+                String phoneNumber = n;
+                Intent callintent = new Intent(Intent.ACTION_CALL);
+                callintent.setData(Uri.parse("tel:" + phoneNumber));
+                startActivity(callintent);
+
+            }
+        });
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    };
+
+
 
 }
