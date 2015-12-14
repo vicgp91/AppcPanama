@@ -99,8 +99,6 @@ public class LlamarFragment extends Fragment {
                 //adapter = new ArrayAdapter<String>(c, android.R.layout.simple_spinner_item,  ANIMALS);
                 //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-
-        rdbPeligro.setFocusable(true);
         animales = new ArrayList<Animal>();
         rellenarArrayListSnniper();
         Spinner mySpinner = (Spinner)view.findViewById(R.id.spinner);
