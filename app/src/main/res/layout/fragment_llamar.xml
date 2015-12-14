@@ -86,6 +86,34 @@
                 android:hint="Otras Indicaciones" />
         </android.support.design.widget.TextInputLayout>
 
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/enPeligro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <RadioGroup
+                android:id="@+id/rdgGrupo"
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkedButton="@+id/rdbOne"
+                android:layout_column="0"
+                android:layout_span="3">
+                <RadioButton
+                    android:id="@+id/rdbOne"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="En Peligro"/>
+                <RadioButton
+                    android:id="@+id/rdbTwo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Atropellado"/>
+            </RadioGroup>
+        </android.support.design.widget.TextInputLayout>
+
+
+
         <Button android:id="@+id/btn_signup"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
