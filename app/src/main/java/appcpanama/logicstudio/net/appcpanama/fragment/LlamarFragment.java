@@ -97,7 +97,7 @@ public class LlamarFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_llamar, container, false);
         c = getActivity();
                 //adapter = new ArrayAdapter<String>(c, android.R.layout.simple_spinner_item,  ANIMALS);
-                //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                // adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         animales = new ArrayList<Animal>();
         rellenarArrayListSnniper();
