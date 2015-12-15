@@ -5,9 +5,11 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -36,9 +38,23 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.BasicResponseHandler;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import appcpanama.logicstudio.net.appcpanama.Common;
 import appcpanama.logicstudio.net.appcpanama.R;
@@ -64,6 +80,9 @@ public class LlamarFragment extends Fragment {
     private static final int PHOTO = 200;
     private static final int FILE = 100;
     private Bitmap _photo = null;
+    HttpClient cliente;
+    HttpPost post;
+    List<NameValuePair> lispair;
     static FragmentActivity c = null;
     static View view;
     private static Uri mUri;
@@ -134,7 +153,8 @@ public class LlamarFragment extends Fragment {
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                submitForm();
+               // submitForm();
+                new EnviarDatos(c).execute();
             }
         });
 
@@ -395,6 +415,61 @@ public class LlamarFragment extends Fragment {
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
     };
+
+    public Boolean registroReporte(){
+
+        String result=null;
+        cliente= new DefaultHttpClient();
+        post=new HttpPost("http://192.168.1.112/api/values?value=test");
+        lispair=new ArrayList<NameValuePair>(1);
+        lispair.add(new BasicNameValuePair("value", "TEXTO DESDE ANDROID"));
+        try {
+            ResponseHandler<String> handler = new BasicResponseHandler();
+            post.setEntity(new UrlEncodedFormEntity(lispair));
+            result = cliente.execute(post, handler);
+            return true;
+        }catch (UnsupportedEncodingException e){
+            e.printStackTrace();
+        }
+        catch (ClientProtocolException e){
+            e.printStackTrace();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    class EnviarDatos extends AsyncTask<String,String,String> {
+        private Activity context;
+        EnviarDatos(Activity contex){
+            this.context=contex;
+        }
+
+        @Override
+        protected  String doInBackground(String... params){
+            if(registroReporte()){
+                context.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(c, "Datos enviados correctamente", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+            else{
+                context.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(c, "Datos no enviados", Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+            }
+            return null;
+        }
+
+    }
+
+
 
 
 
