@@ -422,6 +422,7 @@ public class LlamarFragment extends Fragment {
         if(rdbPeligro.isChecked()){
             radioB="Peligro";
         }if(rdbAtropellado.isChecked()){
+
             radioB="Atropellado";
         }
         animalSelected=animales.get(spinner.getSelectedItemPosition()-1).getNombre();
