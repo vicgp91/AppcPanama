@@ -306,13 +306,13 @@ public class LlamarFragment extends Fragment {
         public void afterTextChanged(Editable editable) {
             switch (view.getId()) {
                 case R.id.input_name:
-                    validateName();
+                    //validateName();
                     break;
                 /*case R.id.input_email:
                     validateEmail();
                     break;*/
                 case R.id.input_ubicacion:
-                    validateUbicacion();
+                    //validateUbicacion();
                     break;
             }
         }
@@ -460,6 +460,8 @@ public class LlamarFragment extends Fragment {
                     @Override
                     public void run() {
                         Toast.makeText(c, "Datos enviados correctamente", Toast.LENGTH_SHORT).show();
+                        inputUbicacion.setText("");
+                        inputName.setText("");
                     }
                 });
             }
