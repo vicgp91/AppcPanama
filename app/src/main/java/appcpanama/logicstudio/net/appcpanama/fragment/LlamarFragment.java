@@ -86,6 +86,13 @@ public class LlamarFragment extends Fragment {
     static View view;
     private static Uri mUri;
     MaterialSpinner spinner;
+
+
+    private String result;
+    private String radioB;
+    private String animalSelected;
+
+
     private static final String[] ANIMALS = new String[] {
             "Perezoso", "Mono Tit\u00ed", "\u00d1eque", "Coat\u00ed"
     };
@@ -419,9 +426,7 @@ public class LlamarFragment extends Fragment {
 
     public Boolean registroReporte(){
 
-        String result=null;
-        String radioB=null;
-        String animalSelected=null;
+
         if(rdbPeligro.isChecked()){
             radioB="Peligro";
         }if(rdbAtropellado.isChecked()){
@@ -435,7 +440,6 @@ public class LlamarFragment extends Fragment {
 
             post=new HttpPost("http://192.168.1.112/api/values");
             post.setHeader("content-type", "application/json");
-
             JSONObject dato = new JSONObject();
             dato.put("nombreAnimal", animalSelected);
             dato.put("estadoAnimmal", radioB);
@@ -445,15 +449,8 @@ public class LlamarFragment extends Fragment {
             StringEntity entity = new StringEntity(dato.toString());
             post.setEntity(entity);
 
-
-           // lispair=new ArrayList<NameValuePair>(4);
-         //  lispair.add(new BasicNameValuePair("value", "TEXTO DESDE ANDROID"));
-
             ResponseHandler<String> handler = new BasicResponseHandler();
-            //post.setEntity(new UrlEncodedFormEntity(lispair));
             result = cliente.execute(post, handler);
-            dato=null;
-
             return true;
         }catch (UnsupportedEncodingException e){
             e.printStackTrace();
