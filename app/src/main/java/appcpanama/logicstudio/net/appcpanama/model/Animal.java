@@ -9,7 +9,33 @@ public class Animal {
     private String nombre;
     private String nombreCientifico;
     private int imageAnimal;
+    private String estadoAnimal;
+    private String ciudadanoReporte;
+    private String ubicacionReporte;
 
+    public String getEstadoAnimal() {
+        return estadoAnimal;
+    }
+
+    public void setEstadoAnimal(String estadoAnimal) {
+        this.estadoAnimal = estadoAnimal;
+    }
+
+    public String getUbicacionReporte() {
+        return ubicacionReporte;
+    }
+
+    public void setUbicacionReporte(String ubicacionReporte) {
+        this.ubicacionReporte = ubicacionReporte;
+    }
+
+    public String getCiudadanoReporte() {
+        return ciudadanoReporte;
+    }
+
+    public void setCiudadanoReporte(String ciudadanoReporte) {
+        this.ciudadanoReporte = ciudadanoReporte;
+    }
 
     public Animal()
     {

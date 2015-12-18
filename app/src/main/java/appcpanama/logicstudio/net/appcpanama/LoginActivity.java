@@ -1,6 +1,7 @@
 package appcpanama.logicstudio.net.appcpanama;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -18,6 +19,9 @@ import appcpanama.logicstudio.net.appcpanama.model.Animal;
  */
 public class LoginActivity extends AppCompatActivity {
 
+    Button irUrlLogic;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +35,14 @@ public class LoginActivity extends AppCompatActivity {
         setToolbar();
 
 
+
+        ((Button) findViewById(R.id.logicWeb)).setOnClickListener(new View.OnClickListener() {
+             public void onClick(View view) {
+                 Uri uri = Uri.parse("http://www.logicstudio.net/");
+                 Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                 startActivity(intent);
+             }
+         });
 
 
         ((Button) findViewById(R.id.btnLogin)).setOnClickListener(new View.OnClickListener() {

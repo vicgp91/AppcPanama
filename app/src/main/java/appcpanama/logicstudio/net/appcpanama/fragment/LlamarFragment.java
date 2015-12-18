@@ -64,17 +64,13 @@ import fr.ganfra.materialspinner.MaterialSpinner;
 
 public class LlamarFragment extends Fragment {
 
-
     private EditText inputName, inputEmail, inputUbicacion;
     private TextInputLayout inputLayoutName, inputLayoutEmail, inputLayoutUbicacion;
     private Button btnSignUp, btnLlamar;
     private TextView textViewMessage;
     private RadioButton rdbPeligro,rdbAtropellado;
-
     private FloatingActionButton fabCamera,fabFolder;
-
     private ArrayList<Animal> animales;
-
     private CoordinatorLayout coordinator;
     private ArrayAdapter<String> adapter;
     private static final int PHOTO = 200;
@@ -87,11 +83,9 @@ public class LlamarFragment extends Fragment {
     static View view;
     private static Uri mUri;
     MaterialSpinner spinner;
-
     private static final String[] ANIMALS = new String[] {
             "Perezoso", "Mono Tit\u00ed", "\u00d1eque", "Coat\u00ed"
     };
-
 
 
     public static LlamarFragment newInstance() {
@@ -138,10 +132,14 @@ public class LlamarFragment extends Fragment {
         inputUbicacion.addTextChangedListener(new MyTextWatcher(inputUbicacion));
 
 
+        rdbPeligro=(RadioButton) view.findViewById(R.id.rdbOne);
+        rdbAtropellado=(RadioButton) view.findViewById(R.id.rdbTwo);
+
         //initSpinnerMultiline(view);
 
         fabCamera =(FloatingActionButton) view.findViewById(R.id.fabCamera);
         fabFolder= (FloatingActionButton) view.findViewById(R.id.fabFolder);
+        spinner = (MaterialSpinner) view.findViewById(R.id.spinner);
 
         btnLlamar=(Button)view.findViewById(R.id.llamar);
         textViewMessage= (TextView) view.findViewById(R.id.lblText);
@@ -348,9 +346,9 @@ public class LlamarFragment extends Fragment {
 
     private void rellenarArrayListSnniper() {
         animales.add(new Animal("Perezoso", "", R.drawable.peresozo));
-        animales.add(new Animal("Mono Tití", "", R.drawable.titi));
-        animales.add(new Animal("Ñeque", "", R.drawable.neque));
-        animales.add(new Animal("Coatí", "", R.drawable.coati));
+        animales.add(new Animal("Mono Titi", "", R.drawable.titi));
+        animales.add(new Animal("\u00d1eque", "", R.drawable.neque));
+        animales.add(new Animal("Coat\u00ed", "", R.drawable.coati));
     }
 
 
@@ -419,8 +417,16 @@ public class LlamarFragment extends Fragment {
     public Boolean registroReporte(){
 
         String result=null;
+        String radioB=null;
+        String animalSelected=null;
+        if(rdbPeligro.isChecked()){
+            radioB="Peligro";
+        }if(rdbAtropellado.isChecked()){
+            radioB="Atropellado";
+        }
+        animalSelected=animales.get(spinner.getSelectedItemPosition()-1).getNombre();
         cliente= new DefaultHttpClient();
-        post=new HttpPost("http://192.168.1.112/api/values?value=test");
+        post=new HttpPost("http://192.168.1.112/api/values?estadoAnimmal="+radioB+"&ciudadanoReporte="+inputName.getText().toString()+"&animal="+animalSelected+"&ubicacion="+inputUbicacion.getText().toString()+"");
         lispair=new ArrayList<NameValuePair>(1);
         lispair.add(new BasicNameValuePair("value", "TEXTO DESDE ANDROID"));
         try {
@@ -447,6 +453,7 @@ public class LlamarFragment extends Fragment {
 
         @Override
         protected  String doInBackground(String... params){
+
             if(registroReporte()){
                 context.runOnUiThread(new Runnable() {
                     @Override
