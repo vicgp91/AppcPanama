@@ -44,9 +44,12 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
@@ -346,7 +349,7 @@ public class LlamarFragment extends Fragment {
 
     private void rellenarArrayListSnniper() {
         animales.add(new Animal("Perezoso", "", R.drawable.peresozo));
-        animales.add(new Animal("Mono Titi", "", R.drawable.titi));
+        animales.add(new Animal("Mono Tit\u00ed", "", R.drawable.titi));
         animales.add(new Animal("\u00d1eque", "", R.drawable.neque));
         animales.add(new Animal("Coat\u00ed", "", R.drawable.coati));
     }
@@ -426,14 +429,31 @@ public class LlamarFragment extends Fragment {
             radioB="Atropellado";
         }
         animalSelected=animales.get(spinner.getSelectedItemPosition()-1).getNombre();
-        cliente= new DefaultHttpClient();
-        post=new HttpPost("http://192.168.1.112/api/values?estadoAnimmal="+radioB+"&ciudadanoReporte="+inputName.getText().toString()+"&animal="+animalSelected+"&ubicacion="+inputUbicacion.getText().toString()+"");
-        lispair=new ArrayList<NameValuePair>(1);
-        lispair.add(new BasicNameValuePair("value", "TEXTO DESDE ANDROID"));
         try {
+        cliente= new DefaultHttpClient();
+        //post=new HttpPost("http://192.168.1.112/api/values?estadoAnimmal="+radioB+"&ciudadanoReporte="+inputName.getText().toString()+"&animal="+animalSelected+"&ubicacion="+inputUbicacion.getText().toString()+"");
+
+            post=new HttpPost("http://192.168.1.112/api/values");
+            post.setHeader("content-type", "application/json");
+
+            JSONObject dato = new JSONObject();
+            dato.put("nombreAnimal", animalSelected);
+            dato.put("estadoAnimmal", radioB);
+            dato.put("nombreCiudadanoReporte", inputName.getText().toString());
+            dato.put("ubicacion", inputUbicacion.getText().toString());
+
+            StringEntity entity = new StringEntity(dato.toString());
+            post.setEntity(entity);
+
+
+           // lispair=new ArrayList<NameValuePair>(4);
+         //  lispair.add(new BasicNameValuePair("value", "TEXTO DESDE ANDROID"));
+
             ResponseHandler<String> handler = new BasicResponseHandler();
-            post.setEntity(new UrlEncodedFormEntity(lispair));
+            //post.setEntity(new UrlEncodedFormEntity(lispair));
             result = cliente.execute(post, handler);
+            dato=null;
+
             return true;
         }catch (UnsupportedEncodingException e){
             e.printStackTrace();
@@ -441,6 +461,9 @@ public class LlamarFragment extends Fragment {
         catch (ClientProtocolException e){
             e.printStackTrace();
         }catch (IOException e){
+            e.printStackTrace();
+        }
+        catch (JSONException e) {
             e.printStackTrace();
         }
         return false;
