@@ -355,10 +355,15 @@ public class LlamarFragment extends Fragment {
     }
 
     private void rellenarArrayListSnniper() {
-        animales.add(new Animal("Perezoso", "", R.drawable.peresozo));
         animales.add(new Animal("Mono Tit\u00ed", "", R.drawable.titi));
+        animales.add(new Animal("Perezoso", "", R.drawable.peresozo));
         animales.add(new Animal("\u00d1eque", "", R.drawable.neque));
         animales.add(new Animal("Coat\u00ed", "", R.drawable.coati));
+
+        /*animales.add(new Animal("Mono Titi", "", R.drawable.titi));
+        animales.add(new Animal("Perezoso", "", R.drawable.peresozo));
+        animales.add(new Animal("Neque", "", R.drawable.neque));
+        animales.add(new Animal("Coati", "", R.drawable.coati));*/
     }
 
 
@@ -435,14 +440,13 @@ public class LlamarFragment extends Fragment {
         }
         animalSelected=animales.get(spinner.getSelectedItemPosition()-1).getNombre();
         try {
-        cliente= new DefaultHttpClient();
-        //post=new HttpPost("http://192.168.1.112/api/values?estadoAnimmal="+radioB+"&ciudadanoReporte="+inputName.getText().toString()+"&animal="+animalSelected+"&ubicacion="+inputUbicacion.getText().toString()+"");
-
+            cliente= new DefaultHttpClient();
             post=new HttpPost("http://192.168.1.112/api/values");
             post.setHeader("content-type", "application/json");
+            //post.setHeader("charset", "utf-8");
             JSONObject dato = new JSONObject();
             dato.put("nombreAnimal", animalSelected);
-            dato.put("estadoAnimmal", radioB);
+            dato.put("estadoAnimal", radioB);
             dato.put("nombreCiudadanoReporte", inputName.getText().toString());
             dato.put("ubicacion", inputUbicacion.getText().toString());
 
